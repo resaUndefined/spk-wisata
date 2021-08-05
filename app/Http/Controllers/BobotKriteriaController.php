@@ -122,12 +122,20 @@ class BobotKriteriaController extends Controller
                                                     'id_kriteria' => $value,
                                                     'id_user' => Auth::id()
                                                     ])->first();
-            $bobotKriteria->id_kriteria = $value;
-            $bobotKriteria->bobot = $request->bobot[$key];
-            $bobotKriteria->save();
+            if ($bobotKriteria) {
+                $bobotKriteria->id_kriteria = $value;
+                $bobotKriteria->bobot = $request->bobot[$key];
+                $bobotKriteria->save();
+            }else {
+                $bobotKriteria = new BobotKriteria();
+                $bobotKriteria->id_user = Auth::id();
+                $bobotKriteria->id_kriteria = $value;
+                $bobotKriteria->bobot = $request->bobot[$key];
+                $bobotKriteria->save();
+            }
         }
 
-        return redirect()->route('bobot-kriteria.index')->with('danger', 'Berhasil mengubah bobot kriteria');
+        return redirect()->route('bobot-kriteria.index')->with('success', 'Berhasil mengubah bobot kriteria');
     }
     /**
      * Update the specified resource in storage.
