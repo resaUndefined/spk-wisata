@@ -99,9 +99,19 @@ class BobotKriteriaController extends Controller
                                 'bobot_kriteria.id_kriteria',
                                 'bobot_kriteria.bobot'
                             ])->get();
-        
+        $arrayKrit = [];
+        foreach ($data as $key => $value) {
+            array_push($arrayKrit,$value->id_kriteria);
+        }
+        $newKriteria = Kriteria::whereNotIn('id',$arrayKrit)->get();
+        foreach ($newKriteria as $kunci => $nilai) {
+            if (!count($nilai->sub_kriteria)) {
+                return redirect('/sub-kriteria/'.$nilai->id)->with('warning', 'Silakan tambahkan sub kriteria terlebih dahulu!');
+            }
+        }
         return view('bobot_kriteria.edit', [
-            'data' => $data
+            'data' => $data,
+            'newKriteria' => $newKriteria
         ]);
     }
 
@@ -117,7 +127,7 @@ class BobotKriteriaController extends Controller
             $bobotKriteria->save();
         }
 
-        return redirect()->route('bobot-kriteria.index')->with('success', 'Berhasil mengubah bobot kriteria');
+        return redirect()->route('bobot-kriteria.index')->with('danger', 'Berhasil mengubah bobot kriteria');
     }
     /**
      * Update the specified resource in storage.

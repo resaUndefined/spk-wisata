@@ -63,6 +63,25 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @if (count($newKriteria))
+                                    @foreach ($newKriteria as $nk)
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" name="kriteria[]" id="kriteria" value="{{ $nk->id }}">
+                                                <input type="text" class="form-control" name="kriteriaNama[]" id="kriteraNama" value="{{ $nk->nama }}" readonly>
+                                            </td>
+                                            <td>
+                                                <select id="bobot" name="bobot[]" class="form-control" required>
+                                                    <option value="5">Sangat Penting</option>
+                                                    <option value="4">Penting</option>
+                                                    <option value="3">Sedang</option>
+                                                    <option value="2">Kurang Penting</option>
+                                                    <option value="1">Sangat Tidak Penting</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
